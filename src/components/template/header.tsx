@@ -29,7 +29,7 @@ export default function Header() {
         <span className="text-primary">FSW</span> Store
       </h1>
     </Link>
-    
+
     <Sheet>
       <SheetTrigger asChild>
         <Button size="icon" variant="outline" className="relative">
