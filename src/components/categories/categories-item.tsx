@@ -17,7 +17,7 @@ const CategoryItem = ({ category }: CategoryItemProps) => {
         {CATEGORY_ICON[category.slug as keyof typeof CATEGORY_ICON]}
         <span className="text-xs font-bold">{category.name}</span>
       </Badge>
-    </Link>
+    </Link> 
   );
 };
 
