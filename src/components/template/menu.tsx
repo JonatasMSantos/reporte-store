@@ -45,7 +45,6 @@ export default function (props?: Props) {
           </SheetDescription> */}
         </SheetHeader>
 
-
         {
           status === 'authenticated' && data?.user && (
             <div className="flex flex-col">
