@@ -2,16 +2,18 @@
 
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetHeader,
-  SheetTrigger
+  SheetTrigger,
 } from "@/components/ui/sheet"
-import { HomeIcon, ListOrderedIcon, LogInIcon, LogOutIcon, MenuIcon, PercentIcon } from "lucide-react"
+import { HomeIcon, ListOrderedIcon, LogInIcon, LogOutIcon, MenuIcon, PackageSearchIcon, PercentIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { signIn, signOut, useSession } from "next-auth/react"
 import { Avatar, AvatarImage } from "@/components/ui/avatar"
 import { AvatarFallback } from "@radix-ui/react-avatar"
 import { Separator } from "@/components/ui/separator"
+import Link from "next/link";
 
 interface Props {
 
@@ -29,84 +31,111 @@ export default function (props?: Props) {
   }
 
   return <>
-    <Sheet>
-      <SheetTrigger asChild>
-        <Button size="icon" variant="outline">
-          <MenuIcon />
-        </Button>
-      </SheetTrigger>
-      <SheetContent side="left">
-        <SheetHeader className="text-left text-lg font-semibold">
-          Menu
-          {/* <SheetTitle>Are you sure absolutely sure?</SheetTitle>
-          <SheetDescription>
-            This action cannot be undone. This will permanently delete your account
-            and remove your data from our servers.
-          </SheetDescription> */}
-        </SheetHeader>
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button size="icon" variant="outline">
+            <MenuIcon />
+          </Button>
+        </SheetTrigger>
 
-        {
-          status === 'authenticated' && data?.user && (
+        <SheetContent side="left" className="w-[21.875rem]">
+          <SheetHeader className="text-left text-lg font-semibold">
+            Menu
+          </SheetHeader>
+
+          {status === "authenticated" && data?.user && (
             <div className="flex flex-col">
-              <div className="py-4 flex items-center gap-2">
+              <div className="flex items-center gap-2 py-4">
                 <Avatar>
                   <AvatarFallback>
                     {data.user.name?.[0].toUpperCase()}
                   </AvatarFallback>
 
-                  {
-                    data.user.image &&
-                    <AvatarImage src={data.user.image} />
-                  }
-
+                  {data.user.image && <AvatarImage src={data.user.image} />}
                 </Avatar>
+
                 <div className="flex flex-col">
                   <p className="font-medium">{data.user.name}</p>
                   <p className="text-sm opacity-75">Boas compras!</p>
                 </div>
-
               </div>
+
               <Separator />
             </div>
-          )
-        }
+          )}
 
-        <div className="mt-4 flex flex-col gap-2">
-          {
-            status === "unauthenticated" && (
-              <Button onClick={handleLoginClick} variant="outline" className="w-full justify-start gap-2">
+          <div className="mt-4 flex flex-col gap-2">
+            {status === "unauthenticated" && (
+              <Button
+                onClick={handleLoginClick}
+                variant="outline"
+                className="w-full justify-start gap-2"
+              >
                 <LogInIcon size={16} />
-                Fazer login
+                Fazer Login
               </Button>
-            )
-          }
+            )}
 
-          {
-            status === "authenticated" && (
-              <Button onClick={handleLogoutClick} variant="outline" className="w-full justify-start gap-2">
+            {status === "authenticated" && (
+              <Button
+                onClick={handleLogoutClick}
+                variant="outline"
+                className="w-full justify-start gap-2"
+              >
                 <LogOutIcon size={16} />
                 Fazer Logout
               </Button>
-            )
-          }
+            )}
 
-          <Button variant="outline" className="w-full justify-start gap-2">
-            <HomeIcon size={16} />
-            Início
-          </Button>
+            <SheetClose asChild>
+              <Link href="/">
+                <Button
+                  variant="outline"
+                  className="w-full justify-start gap-2"
+                >
+                  <HomeIcon size={16} />
+                  Início
+                </Button>
+              </Link>
+            </SheetClose>
 
-          <Button variant="outline" className="w-full justify-start gap-2">
-            <PercentIcon size={16} />
-            Ofertas
-          </Button>
+            <SheetClose asChild>
+              <Link href="/orders">
+                <Button
+                  variant="outline"
+                  className="w-full justify-start gap-2"
+                >
+                  <PackageSearchIcon size={16} />
+                  Meus Pedidos
+                </Button>
+              </Link>
+            </SheetClose>
 
-          <Button variant="outline" className="w-full justify-start gap-2">
-            <ListOrderedIcon size={16} />
-            Catálogo
-          </Button>
-        </div>
+            <SheetClose asChild>
+              <Link href="/deals">
+                <Button
+                  variant="outline"
+                  className="w-full justify-start gap-2"
+                >
+                  <PercentIcon size={16} />
+                  Ofertas
+                </Button>
+              </Link>
+            </SheetClose>
 
-      </SheetContent>
-    </Sheet>
+            <SheetClose asChild>
+              <Link href="/catalog">
+                <Button
+                  variant="outline"
+                  className="w-full justify-start gap-2"
+                >
+                  <ListOrderedIcon size={16} />
+                  Catálogo
+                </Button>
+              </Link>
+            </SheetClose>
+          </div>
+        </SheetContent>
+      </Sheet>
   </>
 }
