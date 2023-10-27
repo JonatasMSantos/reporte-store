@@ -24,8 +24,13 @@ const Cart = () => {
     }
 
     const order = await createOrder(products, (data?.user as any).id);
-
-    const checkout_id = await createCheckout(products, order.id);
+    let checkout_id;
+    try {
+      checkout_id = await createCheckout(products, order.id);  
+    } catch (error) {
+      console.log(error)
+    }
+    
 
     const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
