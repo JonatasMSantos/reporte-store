@@ -10,7 +10,7 @@ export const POST = async (request: Request) => {
   const signature = request.headers.get("stripe-signature");
 
   if (!signature) {
-    return NextResponse.error();
+    return NextResponse.json({}, {status: 404, statusText: "No signature sent"});
   }
 
   const text = await request.text();
