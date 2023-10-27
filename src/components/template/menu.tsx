@@ -15,11 +15,8 @@ import { AvatarFallback } from "@radix-ui/react-avatar"
 import { Separator } from "@/components/ui/separator"
 import Link from "next/link";
 
-interface Props {
 
-}
-
-export default function (props?: Props) {
+export default function Menu () {
   const { status, data } = useSession()
 
   const handleLoginClick = async () => {
