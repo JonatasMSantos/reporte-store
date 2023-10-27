@@ -36,5 +36,5 @@ export const createCheckout = async (
   });
 
   // RETORNAR O CHECKOUT
-  return JSON.parse(JSON.stringify(checkout))
+  return checkout
 };
