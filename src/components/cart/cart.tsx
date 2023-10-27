@@ -25,14 +25,14 @@ const Cart = () => {
 
     const order = await createOrder(products, (data?.user as any).id);
 
-    const checkout = await createCheckout(products, order.id);
+    const checkout_id = await createCheckout(products, order.id);
 
     const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
     // Criar pedido no banco
 
     stripe?.redirectToCheckout({
-      sessionId: checkout.id,
+      sessionId: JSON.parse(JSON.stringify(checkout_id)),
     });
   };
 
