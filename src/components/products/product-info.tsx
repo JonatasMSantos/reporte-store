@@ -1,18 +1,20 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import DiscountBadge from "@/components/badges/discount-badge";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 import { ProductWithTotalPrice } from "@/helpers/product";
 import { CartContext } from "@/providers/cart";
-import { ArrowLeftIcon, ArrowRightIcon, MinusIcon, PlusIcon, TruckIcon } from "lucide-react";
+import { MinusIcon, PlusIcon, TruckIcon } from "lucide-react";
 import { useContext, useState } from "react";
 
-interface ProductInfoProps { 
+interface ProductInfoProps {
   product: ProductWithTotalPrice;
 }
 
 const ProductInfo = ({ product }: ProductInfoProps) => {
   const [quantity, setQuantity] = useState(1);
+  const { toast } = useToast()
 
   const { addProductToCart } = useContext(CartContext);
 
@@ -26,6 +28,7 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
 
   const handleAddToCartClick = () => {
     addProductToCart({ ...product, quantity });
+    toast({title: "", description: "Adicionado ao carrinho", variant: "info", duration: 1000})
   };
 
   return (
@@ -87,7 +90,7 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
 
           <div className="flex flex-col">
             <p className="text-xs">
-              Entrega via <span className="font-bold">FSPacket®</span>
+              Entrega via <span className="font-bold">JSPacket®</span>
             </p>
             <p className="text-xs text-[#8162FF]">
               Envio para <span className="font-bold">todo Brasil</span>
