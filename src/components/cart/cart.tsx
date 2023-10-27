@@ -28,7 +28,7 @@ const Cart = () => {
     try {
       checkout_id = await createCheckout(products, order.id);  
     } catch (error) {
-      console.log(error)
+      console.log("error", error)
     }
     
 
