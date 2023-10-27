@@ -21,8 +21,10 @@ export const POST = async (request: Request) => {
     signature,
     process.env.STRIPE_WEBHOOK_SECRET_KEY, 
   );
+  console.log(event.type)
 
   if (event.type === "checkout.session.completed") {
+    console.log("ENTROU", "checkout.session.completed")
     const session = event.data.object as any;
 
     const sessionWithLineItems = await stripe.checkout.sessions.retrieve(
