@@ -1,26 +1,21 @@
-
 import { prismaClient } from "@/lib/prisma";
-import { NextResponse } from "next/server";
-import { headers } from "next/headers";
 import Stripe from "stripe";
+
+import { NextResponse } from "next/server";
+import { buffer } from "node:stream/consumers";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2023-10-16",
 });
 
-export const POST = async (req: Request) => { 
+export async function POST(req: any) {
+  const rawBody = await buffer(req.body);
+  let event;
   try {
-    const body = await req.text();
-    const signature = headers().get("stripe-signature");
-
-    if (!signature) {
-      return NextResponse.error();
-    }
-
-    const event = stripe.webhooks.constructEvent(
-      body,
-      signature,
-      process.env.STRIPE_WEBHOOK_SECRET_KEY,
+    event = stripe.webhooks.constructEvent(
+      rawBody,
+      req.headers.get("stripe-signature") as string,
+      process.env.STRIPE_WEBHOOK_SECRET_KEY as string,
     );
 
     if (event.type === "checkout.session.completed") {
@@ -46,14 +41,15 @@ export const POST = async (req: Request) => {
     }
 
     return NextResponse.json({ received: true });
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    console.log(err);
     return NextResponse.json(
       {
-        message: "something went wrong",
-        ok: false,
+        message: "Webhook signature verification failed",
       },
-      { status: 500 },
+      {
+        status: 400,
+      },
     );
   }
-};
+}
